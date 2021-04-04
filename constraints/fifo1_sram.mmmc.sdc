@@ -29,7 +29,7 @@ echo set_analysis_view -setup func_max_scenario -hold func_min_scenario >> mmmc.
 
 # This is done so constraints applied are applied to all analysis views.
 # sdc file that needs to run is /syn/outputs/fifo1_sram.genus.sdc
-echo set_interactive_constraint_modes {func_max_sdc func_min_sdc} >> mmmc.tcl
+echo "set_interactive_constraint_modes \{func_max_sdc func_min_sdc\}" >> mmmc.tcl
 
 set init_mmmc_file mmmc.tcl
 
