@@ -69,7 +69,11 @@ if { [info exists synopsys_program_name ] } {
 
     # Try reducing the search and repair iterations for now.
     setNanoRouteMode -drouteEndIteration 10
-    
+    #setNanoRouteMode -routeWithViaInPin true
+    #setNanoRouteMode -routeWithViaInPin 1:1
+    setNanoRouteMode -routeWithViaOnlyForMacroCellPin false
+    setNanoRouteMode -routeWithViaOnlyForStandardCellPin 1:1
+
     #Cadence method.  Not floating with these statements
     setPinAssignMode -pinEditInBatch true
     set all_ports [ get_ports * ]
