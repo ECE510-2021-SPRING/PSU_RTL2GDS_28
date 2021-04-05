@@ -63,6 +63,15 @@ update_names -inst -hnet -restricted {]} -convert_string "_"
 # Load the timing and design constraints
 source -echo -verbose ../../constraints/${top_design}.sdc
 
+if { [info exists enable_dft] &&  $enable_dft  } {
+
+   check_dft_rules
+   # Need to have test_mode port defined to run this command. 
+   fix_dft_violations -clock -async_set -async_reset -test_control test_mode  
+   report dft_registers
+
+}
+
 set_dont_use [get_lib_cells */DELLN* ]
 
 syn_gen
@@ -72,14 +81,6 @@ syn_gen
 # Duplicate any non-unique modules so details can be different inside for synthesis
 uniquify $top_design
 
-if { [info exists enable_dft] &&  $enable_dft  } {
-
-   check_dft_rules
-   # Need to have test_mode port defined to run this command. 
-   fix_dft_violations -clock -async_set -async_reset -test_control test_mode  
-   report dft_registers
-
-}
 
 #compile with ultra features and with scan FFs
 syn_map
