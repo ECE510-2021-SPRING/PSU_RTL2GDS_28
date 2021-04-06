@@ -115,7 +115,7 @@ if { $enable_dft == 1} {
 }
 
 
-syn_opt -physical
+syn_opt -spatial
 
 # output reports
 set stage genus_phys
