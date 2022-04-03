@@ -68,7 +68,10 @@ if { [info exists synopsys_program_name ] } {
 } else {
 
     # Try reducing the search and repair iterations for now.
-    setNanoRouteMode -drouteEndIteration 10
+
+    #setNanoRouteMode -drouteEndIteration 10
+    #setNanoRouteMode -drouteEndIteration 0
+
     #setNanoRouteMode -routeWithViaInPin true
     #setNanoRouteMode -routeWithViaInPin 1:1
     setNanoRouteMode -routeWithViaOnlyForMacroCellPin false

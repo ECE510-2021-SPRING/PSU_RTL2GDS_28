@@ -23,7 +23,7 @@ puts " Setting up normal constraints "
 
 create_clock -name "clock" -period 3.5 -waveform {0 1.75} -add clock
 set_clock_latency -source 0.9 [get_clocks clock]
-set_clock_transition 0.13 [get_clocks clock]
+set_clock_transition 0.185 [get_clocks clock]
 set_input_delay 0.0016 [all_inputs] -clock clock
 set_output_delay 0.0016 [all_outputs] -clock clock
 set_driving_cell -lib_cell NBUFFX8_HVT [all_inputs]

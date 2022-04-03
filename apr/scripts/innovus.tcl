@@ -38,9 +38,10 @@ if { [regexp -nocase "f" $flow ] } {
 
     init_design
 
-    #defIn "../outputs/${top_design}.floorplan.innovus.def" 
-    defIn "../outputs/${top_design}.floorplan.innovus.macros.def" 
+    defIn "../outputs/${top_design}.floorplan.innovus.def" 
+    #defIn "../outputs/${top_design}.floorplan.innovus.macros.def" 
 
+    add_tracks -honor_pitch
 
     if { $enable_dft == 1} {
     	echo READING SCANDEF
@@ -107,6 +108,10 @@ if { [regexp -nocase "c" $flow ] } {
     } elseif { [regexp -nocase "f" $flow ] && ![regexp -nocase "p" $flow ] } {
        puts "FLOW ERROR: You are trying to run route and skipping some but not all earlier stages"
        return -level 1 
+    }
+
+    if [ file exists ${top_design}.preCTS.tcl ] {
+       source -echo -verbose ${top_design}.preCTS.tcl 
     }
 
     ccopt_design

@@ -5,6 +5,8 @@
 
 defIn "../outputs/${top_design}.floorplan.innovus.macros.def" 
 
+add_tracks -honor_pitch
+
 #loadFPlan
 clearGlobalNets
 globalNetConnect VDD -type pgpin -pin VDD -inst *
