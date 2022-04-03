@@ -69,7 +69,10 @@ if { [info exists synopsys_program_name ] } {
 
     # Try reducing the search and repair iterations for now.
 
-    #setNanoRouteMode -drouteEndIteration 10
+    # Setting to 3 so that runtime is a bit better until we debug the M2 
+    # power grid conflice problem that causes drc fixing to loop many times
+    setNanoRouteMode -drouteEndIteration 3
+    # 0 or 1 can be good setting for initial debug
     #setNanoRouteMode -drouteEndIteration 0
 
     #setNanoRouteMode -routeWithViaInPin true
