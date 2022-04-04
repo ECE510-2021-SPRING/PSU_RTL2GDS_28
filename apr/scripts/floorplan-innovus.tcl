@@ -36,8 +36,8 @@ checkDesign -powerGround -noHtml -outfile pg.rpt
 # Core power ring
 addRing -type core_rings -nets {VDD VSS} -layer {top M8 bottom M8 left M7 right M7} -offset 1 -width 4 -spacing 1.0
 # Add Meshes
-addStripe -nets {VDD VSS} -direction vertical   -layer M2 -width 0.060 -set_to_set_distance 20 -spacing 10
-addStripe -nets {VDD VSS} -direction horizontal   -layer M3 -width 0.060 -set_to_set_distance 20 -spacing 10
+#addStripe -nets {VDD VSS} -direction vertical   -layer M2 -width 0.060 -set_to_set_distance 20 -spacing 10
+#addStripe -nets {VDD VSS} -direction horizontal   -layer M3 -width 0.060 -set_to_set_distance 20 -spacing 10
 addStripe -nets {VDD VSS} -direction vertical   -layer M4 -width 0.060 -set_to_set_distance 20 -spacing 10
 addStripe -nets {VDD VSS} -direction horizontal   -layer M5 -width 0.120 -set_to_set_distance 20 -spacing 10
 addStripe -nets {VDD VSS} -direction vertical   -layer M6 -width 0.120 -set_to_set_distance 20 -spacing 10
@@ -45,7 +45,7 @@ addStripe -nets {VDD VSS} -direction horizontal   -layer M7 -width 2 -set_to_set
 addStripe -nets {VDD VSS} -direction vertical   -layer M8 -width 4 -set_to_set_distance 80 -spacing 40
 
 # Connect full grid and add M1 VDD/VSS rails. 
-sroute -connect {corePin padPin} -crossoverViaLayerRange {1 2}
+sroute -connect {corePin padPin} -crossoverViaLayerRange {1 4}
 
 # Placing pins and spreading pins out. 
 #editPin -edge 3 -pin [get_attribute [get_ports *] full_name] -layer 4 -spreadDirection clockwise -spreadType RANGE -offsetStart 100 -fixedPin 1 -fixOverlap 1 

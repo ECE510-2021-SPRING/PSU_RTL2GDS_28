@@ -10,6 +10,36 @@
 ## You might see this error otherwise.
 ## **ERROR: (IMPCCOPT-3092):	Couldn't load external LP solver library. Error returned:
 
+proc innovus_reporting { stage postcts postroute } {
+global top_design
+   if { !$postcts && !$postroute } {
+     redirect -tee ../reports/$top_design.innovus.$stage.congestion.2d.rpt { reportCongestion -hotSpot -overflow -includeBlockage }
+     redirect -tee ../reports/$top_design.innovus.$stage.congestion.3d.rpt { reportCongestion -hotSpot -overflow -includeBlockage -3d }
+    timeDesign -preCTS -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
+   }
+   if { $postcts } {
+     report_ccopt_skew_groups -summary -file ../reports/$top_design.innovus.$stage.ccopt_skew_groups.rpt
+     report_ccopt_clock_trees -summary -file ../reports/$top_design.innovus.$stage.ccopt_clock_trees.rpt
+     if { ! $postroute } {
+        timeDesign -postCTS -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
+        timeDesign -postCTS -hold -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
+     }
+   }
+   if { $postroute } {
+     verify_drc -limit 0 -report ../reports/$top_design.innovus.$stage.drc.rpt
+     verifyConnectivity -error 100000 -noAntenna -report ../reports/$top_design.innovus.$stage.connectivity.rpt 
+     timeDesign -postRoute -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
+     timeDesign -postRoute -si -prefix ${stage}_si -outDir ../reports/${top_design}.innovus -expandedViews
+     timeDesign -postRoute -hold -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
+     timeDesign -postRoute -hold -si -prefix ${stage}_si -outDir ../reports/${top_design}.innovus -expandedViews
+     #report_power > ../reports/${top_design}.ROUTE_power_from_innovus_tcl.rpt
+     #report_area > ../reports/${top_design}.ROUTE_area_from_innovus_tcl.rpt
+     report_power > ../reports/${top_design}.innovus.${stage}.power.rpt
+   }
+   
+   redirect -tee ../reports/${top_design}.innovus.$stage.density.rpt { reportDensityMap }
+   summaryReport -noHtml -outfile ../reports/${top_design}.innovus.$stage.summary.rpt
+}
 
 source -echo -verbose ../../$top_design.design_config.tcl
 
@@ -87,11 +117,15 @@ if { [regexp -nocase "p" $flow ] } {
     }
     puts "######## STARTING PLACE #################"
 
+setOptMode -usefulSkew false
+setOptMode -usefulSkewCCOpt none
+setOptMode -usefulSkewPostRoute false
+setOptMode -usefulSkewPreCTS false
 
     place_opt_design
 
     set stage place
-    timeDesign -preCTS -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
+    innovus_reporting $stage 0 0    
     
     saveDesign ${top_design}_place.innovus
 
@@ -114,6 +148,11 @@ if { [regexp -nocase "c" $flow ] } {
        source -echo -verbose ${top_design}.preCTS.tcl 
     }
 
+setOptMode -usefulSkew false
+setOptMode -usefulSkewCCOpt none
+setOptMode -usefulSkewPostRoute false
+setOptMode -usefulSkewPreCTS false
+
     ccopt_design
     setAnalysisMode -analysisType onChipVariation
     setAnalysisMode -cppr both
@@ -122,9 +161,8 @@ if { [regexp -nocase "c" $flow ] } {
     #opt_design -post_cts -hold
 
     set stage postcts
-    timeDesign -postCTS -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
-    timeDesign -postCTS -hold -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
 
+    innovus_reporting $stage 1 0    
     saveDesign ${top_design}_postcts.innovus
 
     #report_power > ../reports/${top_design}.$stage.CLOCK_power_from_innovus_tcl.rpt
@@ -146,6 +184,11 @@ if { [regexp -nocase "r" $flow ] } {
     }
     puts "######## ROUTE_OPT #################"
 
+setOptMode -usefulSkew false
+setOptMode -usefulSkewCCOpt none
+setOptMode -usefulSkewPostRoute false
+setOptMode -usefulSkewPreCTS false
+
     routeDesign
     #route_design
 
@@ -159,14 +202,8 @@ if { [regexp -nocase "r" $flow ] } {
 
     # output reports
     set stage route
-    timeDesign -postRoute -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
-    timeDesign -postRoute -si -prefix ${stage}_si -outDir ../reports/${top_design}.innovus -expandedViews
-    timeDesign -postRoute -hold -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
-    timeDesign -postRoute -hold -si -prefix ${stage}_si -outDir ../reports/${top_design}.innovus -expandedViews
+    innovus_reporting $stage 1  1   
     
-    #report_power > ../reports/${top_design}.ROUTE_power_from_innovus_tcl.rpt
-    #report_area > ../reports/${top_design}.ROUTE_area_from_innovus_tcl.rpt
-    report_power > ../reports/${top_design}.innvous.${stage}.power.rpt
 
     # output netlist.  Look in the Saved Design Directory for the netlist
     #write_hdl $top_design > ../outputs/${top_design}.$stage.vg
