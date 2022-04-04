@@ -27,8 +27,8 @@ set design_size { 1850 1380  }
 set design_io_border 10
 set dc_floorplanning 1
 set rtl_list [list ../rtl/$top_design.sv ]
-set slow_corner "ss0p75v125c ss0p95v125c_2p25v ss0p95v125c"
-set fast_corner "ff0p95vn40c ff1p16vn40c_2p75v ff1p16vn40c"
+set slow_corner "ss0p95v125c_2p25v ss0p95v125c"
+set fast_corner "ff1p16vn40c_2p75v ff1p16vn40c"
 set synth_corners $slow_corner
 set synth_corners_slow $slow_corner
 set synth_corners_fast $fast_corner

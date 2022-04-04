@@ -69,16 +69,18 @@ if { [info exists synopsys_program_name ] } {
 
     # Try reducing the search and repair iterations for now.
 
-    # Setting to 3 so that runtime is a bit better until we debug the M2 
-    # power grid conflice problem that causes drc fixing to loop many times
-    setNanoRouteMode -drouteEndIteration 3
-    # 0 or 1 can be good setting for initial debug
+    setNanoRouteMode -drouteEndIteration 5 
     #setNanoRouteMode -drouteEndIteration 0
 
     #setNanoRouteMode -routeWithViaInPin true
     #setNanoRouteMode -routeWithViaInPin 1:1
     setNanoRouteMode -routeWithViaOnlyForMacroCellPin false
     setNanoRouteMode -routeWithViaOnlyForStandardCellPin 1:1
+
+    setOptMode -usefulSkew false
+    setOptMode -usefulSkewCCOpt none
+    setOptMode -usefulSkewPostRoute false
+    setOptMode -usefulSkewPreCTS false
 
     #Cadence method.  Not floating with these statements
     setPinAssignMode -pinEditInBatch true

@@ -5,7 +5,7 @@ if { [info exists synopsys_program_name ] && ($synopsys_program_name == "icc2_sh
     create_corner slow
     create_scenario -mode func -corner slow -name func_slow
     current_scenario func_slow
-    set_operating_condition ss0p75v125c -library saed32lvt_ss0p75v125c
+    set_operating_condition ss0p95v125c -library saed32lvt_ss0p95v125c
     read_parasitic_tech -tlup $tlu_dir/saed32nm_1p9m_Cmax.tluplus -layermap $tlu_dir/saed32nm_tf_itf_tluplus.map -name Cmax
     read_parasitic_tech -tlup $tlu_dir/saed32nm_1p9m_Cmin.tluplus -layermap $tlu_dir/saed32nm_tf_itf_tluplus.map -name Cmin
     set_parasitic_parameters -early_spec Cmax -early_temperature 125
@@ -16,12 +16,12 @@ if { [info exists synopsys_program_name ] && ($synopsys_program_name == "icc2_sh
     #set_scenario_status  default -active false
     set_scenario_status func_slow -active true -hold true -setup true
 } else {
-    set_operating_condition ss0p75v125c -library saed32lvt_ss0p75v125c
+    set_operating_condition ss0p95v125c -library saed32lvt_ss0p95v125c
 }
 
 puts " Setting up normal constraints "
 
-create_clock -name "clock" -period 3.5 -waveform {0 1.75} -add clock
+create_clock -name "clock" -period 2.0  -add clock
 set_clock_latency -source 0.9 [get_clocks clock]
 set_clock_transition 0.185 [get_clocks clock]
 set_input_delay 0.0016 [all_inputs] -clock clock
