@@ -26,7 +26,8 @@ global top_design
      }
    }
    if { $postroute } {
-     verify_drc -limit 0 -report ../reports/$top_design.innovus.$stage.drc.rpt
+     verify_drc -limit 100000 -report ../reports/$top_design.innovus.$stage.drc.all.rpt
+     verify_drc -limit 100000 -check_only regular -report ../reports/$top_design.innovus.$stage.drc.regular.rpt
      verifyConnectivity -error 100000 -noAntenna -report ../reports/$top_design.innovus.$stage.connectivity.rpt 
      timeDesign -postRoute -prefix $stage -outDir ../reports/${top_design}.innovus -expandedViews
      timeDesign -postRoute -si -prefix ${stage}_si -outDir ../reports/${top_design}.innovus -expandedViews
@@ -153,6 +154,8 @@ setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
 setOptMode -usefulSkewPreCTS false
 
+setNanoRouteMode -droutePostRouteSpreadWire false
+
     ccopt_design
     setAnalysisMode -analysisType onChipVariation
     setAnalysisMode -cppr both
@@ -188,6 +191,8 @@ setOptMode -usefulSkew false
 setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
 setOptMode -usefulSkewPreCTS false
+
+setNanoRouteMode -droutePostRouteSpreadWire false
 
     routeDesign
     #route_design
