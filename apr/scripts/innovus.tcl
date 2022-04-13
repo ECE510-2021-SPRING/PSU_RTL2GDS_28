@@ -149,12 +149,35 @@ if { [regexp -nocase "c" $flow ] } {
        source -echo -verbose ${top_design}.preCTS.tcl 
     }
 
+setDesignMode -process 28
+
 setOptMode -usefulSkew false
 setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
 setOptMode -usefulSkewPreCTS false
 set_ccopt_property update_io_latency false
-
+# /pkgs/cadence/2020-11/INNOVUS191/doc/innovusUG/CCOpt_Properties.html
+# https://support.cadence.com/apex/techpubDocViewerPage?path=innovusUG/innovusUG21.13/CCOpt_Properties.html
+# /pkgs/cadence/2020-11/INNOVUS191/doc/innovusUG/Clock_Tree_Synthesis.html
+#set_ccopt_property target_skew 0.1 
+#set_ccopt_property use_inverters true
+#set_ccopt_property inverter_cells {}
+#set_ccopt_property buffer_cells { }
+#set ccopt_property clock_gating_cells { }
+#set_ccopt_property target_max_trans 0.1
+#set_ccopt_property insertion_delay 0.5
+#set_ccopt_property max_fanout 50
+#set_ccopt_property target_max_capacitance 0.1
+set_ccopt_property routing_top_min_fanout 10000
+#add_ndr -name CTS_RULE -spacing {M1 0.1 M2:M8 0.112 }
+add_ndr -name CTS_RULE -spacing  {M1 0.1 M2:M8 0.112 } -width_multiplier {M3:M8 2 } -generate_via
+# Main power grid is currently on M7/M8
+create_route_type -name top_type -non_default_rule CTS_RULE -top_preferred_layer M8 -bottom_preferred_layer M7
+set_ccopt_property -net_type top route_type top_type
+create_route_type -name trunk_type -non_default_rule CTS_RULE -top_preferred_layer M6 -bottom_preferred_layer M5
+set_ccopt_property -net_type trunk route_type trunk_type
+#create_route_type -name leaf_type -non_default_rule CTS_RULE -top_preferred_layer M7 -bottom_preferred_layer M6
+#set_ccopt_property -net_type leaf route_type leaf_type
 
 setNanoRouteMode -droutePostRouteSpreadWire false
 
@@ -202,6 +225,8 @@ setOptMode -usefulSkewPostRoute false
 setOptMode -usefulSkewPreCTS false
 
 setNanoRouteMode -droutePostRouteSpreadWire false
+#setNanoRouteMode -routeTopRoutingLayer 7
+#setNanoRouteMode -routeBottomRoutingLayer 2
 
     routeDesign
     #route_design
