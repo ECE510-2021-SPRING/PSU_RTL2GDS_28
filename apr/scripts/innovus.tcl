@@ -206,8 +206,16 @@ setNanoRouteMode -droutePostRouteSpreadWire false
     routeDesign
     #route_design
 
+# Should add tie hi/lo
+#setTieHiLoMode -maxFanout 20 -maxDistance 50 -cell {TIEH_RVT TIEL_RVT}
+#addTieHiLo
+
     optDesign -postRoute -setup -hold
     #opt_design -post_route -setup -hold
+
+   globalNetConnect VDD -type pgpin -pin VDD -inst *
+   globalNetConnect VSS -type pgpin -pin VSS -inst *
+   # Should add other power nets if multivoltage
 
     saveDesign ${top_design}_route.innovus
 
