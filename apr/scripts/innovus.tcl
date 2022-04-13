@@ -153,12 +153,21 @@ setOptMode -usefulSkew false
 setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
 setOptMode -usefulSkewPreCTS false
+set_ccopt_property update_io_latency false
+
 
 setNanoRouteMode -droutePostRouteSpreadWire false
 
     ccopt_design
     setAnalysisMode -analysisType onChipVariation
     setAnalysisMode -cppr both
+
+# IO clock latencies are not adjusted as desired.
+#update_io_latency
+#May have to change earlier command to ccopt_design -cts
+# Or reset to ideal mode first, then update_io_latency, then set_propagated_clock again.
+# https://support.cadence.com/apex/ArticleAttachmentPortal?id=a1O0V000007MokSUAS&pageName=ArticleContent
+# Or fix the problem with set_ccopt_propert update_io_latency true
 
     optDesign -postCTS -hold
     #opt_design -post_cts -hold

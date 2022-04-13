@@ -22,7 +22,11 @@ if { [info exists synopsys_program_name ] && ($synopsys_program_name == "icc2_sh
 puts " Setting up normal constraints "
 
 create_clock -name "clock" -period 2.0  -add clock
-set_clock_latency -source 0.9 [get_clocks clock]
+#set_clock_latency -source 0.9 [get_clocks clock]
+set_clock_latency -source -early -min 0 [get_port clock  ] -clock [get_clock clock ]
+set_clock_latency -source -early -max 0 [get_port clock  ] -clock [get_clock clock ]
+set_clock_latency -source -late -min 0 [get_port clock  ] -clock [get_clock clock ]
+set_clock_latency -source -late -max 0 [get_port clock  ] -clock [get_clock clock ]
 set_clock_transition 0.185 [get_clocks clock]
 set_input_delay 0.0016 [all_inputs] -clock clock
 set_output_delay 0.0016 [all_outputs] -clock clock
