@@ -41,7 +41,8 @@ set split_constraints 0
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
 set rtl_list [list ../rtl/$top_design.sv ]
 
-set slow_corner "ss0p75vn40c ss0p75vn40c_i0p95v ss0p75vn40c_i0p75v ss0p95vn40c ss0p95vn40c_i0p75v"
+#set slow_corner "ss0p75vn40c ss0p75vn40c_i0p95v ss0p75vn40c_i0p75v ss0p95vn40c ss0p95vn40c_i0p75v"
+set slow_corner "ss0p95vn40c_i0p95v ss0p95vn40c "
 set fast_corner "ff0p95vn40c ff0p95vn40c_i1p16v ff0p95vn40c_i0p95v ff1p16vn40c ff1p16vn40c_i1p16v ff1p16vn40c_i0p95v"
 set slow_metal 1p9m_Cmax_-40
 set fast_metal 1p9m_Cmax_-40
