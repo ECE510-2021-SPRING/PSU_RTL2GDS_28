@@ -69,10 +69,15 @@ if { [regexp -nocase "f" $flow ] } {
 
     init_design
 
+   if { [file exists ../scripts/${top_design}.pre.floorplan.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.floorplan.tcl }
+
     defIn "../outputs/${top_design}.floorplan.innovus.def" 
     #defIn "../outputs/${top_design}.floorplan.innovus.macros.def" 
 
     add_tracks -honor_pitch
+
+   if { [file exists ../scripts/${top_design}.post.floorplan.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.floorplan.tcl }
+
 
     if { $enable_dft == 1} {
     	echo READING SCANDEF
@@ -123,7 +128,9 @@ setOptMode -usefulSkewCCOpt none
 setOptMode -usefulSkewPostRoute false
 setOptMode -usefulSkewPreCTS false
 
+   if { [file exists ../scripts/${top_design}.pre.place.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.place.tcl }
     place_opt_design
+   if { [file exists ../scripts/${top_design}.post.place.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.place.tcl }
 
     set stage place
     innovus_reporting $stage 0 0    
@@ -145,9 +152,6 @@ if { [regexp -nocase "c" $flow ] } {
        return -level 1 
     }
 
-    if [ file exists ${top_design}.preCTS.tcl ] {
-       source -echo -verbose ${top_design}.preCTS.tcl 
-    }
 
 setDesignMode -process 28
 
@@ -181,7 +185,10 @@ set_ccopt_property -net_type trunk route_type trunk_type
 
 setNanoRouteMode -droutePostRouteSpreadWire false
 
+   if { [file exists ../scripts/${top_design}.pre.cts.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.cts.tcl }
     ccopt_design
+   if { [file exists ../scripts/${top_design}.post.cts.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.cts.tcl }
+
     setAnalysisMode -analysisType onChipVariation
     setAnalysisMode -cppr both
 
@@ -192,7 +199,9 @@ setNanoRouteMode -droutePostRouteSpreadWire false
 # https://support.cadence.com/apex/ArticleAttachmentPortal?id=a1O0V000007MokSUAS&pageName=ArticleContent
 # Or fix the problem with set_ccopt_propert update_io_latency true
 
+   if { [file exists ../scripts/${top_design}.pre.opt.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.opt.tcl }
     optDesign -postCTS -hold
+   if { [file exists ../scripts/${top_design}.post.opt.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.opt.tcl }
     #opt_design -post_cts -hold
 
     set stage postcts
@@ -228,7 +237,9 @@ setNanoRouteMode -droutePostRouteSpreadWire false
 #setNanoRouteMode -routeTopRoutingLayer 7
 #setNanoRouteMode -routeBottomRoutingLayer 2
 
+   if { [file exists ../scripts/${top_design}.pre.route.tcl ] } { source -echo -verbose ../scripts/${top_design}.pre.route.tcl }
     routeDesign
+   if { [file exists ../scripts/${top_design}.post.route.tcl ] } { source -echo -verbose ../scripts/${top_design}.post.route.tcl }
     #route_design
 
 # Should add tie hi/lo
