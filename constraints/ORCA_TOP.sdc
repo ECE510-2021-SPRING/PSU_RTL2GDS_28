@@ -40,9 +40,9 @@ if { [info exists synopsys_program_name ] } {
 		}
 
 		set_scenario_status func_worst -active true -hold false -setup true
-		set_scenario_status func_best  -active true -hold false  -setup false
+		set_scenario_status func_best  -active true -hold true  -setup false
 		set_scenario_status test_worst -active true -hold false -setup true
-		set_scenario_status test_best  -active true -hold false  -setup false
+		set_scenario_status test_best  -active true -hold true  -setup false
 
 		current_scenario "func_worst"
 
