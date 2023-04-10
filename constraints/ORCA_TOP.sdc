@@ -97,7 +97,10 @@ if { [info exists synopsys_program_name ] } {
 	 }
 	}
 } elseif {[get_db root: .program_short_name] == "genus"} {
-
+   read_power_intent ../../constraints/ORCA_TOP.upf -version 2.0 -module $top_design
+   apply_power_intent
+   commit_power_intent
+#   report_power_intent 
    set_units -time ns
    source -echo -verbose ../../constraints/${top_design}_func_worst.sdc
    set_false_path -from SDRAM_CLK -to SD_DDR_CLK
@@ -106,5 +109,3 @@ if { [info exists synopsys_program_name ] } {
 
 	set_units -time ns -resistance MOhm -capacitance fF -voltage V -current uA
 }
-
-

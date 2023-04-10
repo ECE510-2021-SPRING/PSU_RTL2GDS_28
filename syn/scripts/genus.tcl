@@ -117,4 +117,4 @@ if { [info exists enable_dft] &&  $enable_dft  } {
 }
 
 write_db -all_root_attributes -verbose ../outputs/${top_design}.$stage.db
-
+write_power_intent -design $top_design -base_name ../outputs/${top_design}.$stage -overwrite

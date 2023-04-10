@@ -29,7 +29,7 @@ set top_design ORCA_TOP
 set FCL 1
 set add_ios 0
 set pad_design 0
-set design_size {1000 644 }
+set design_size {1000 800}
 set design_io_border 10
 set dc_floorplanning 1
 set enable_dft 1
@@ -41,8 +41,8 @@ set split_constraints 0
 # This is hacked P&R netlist with SRAMs and test and level shifters removed.
 set rtl_list [list ../rtl/$top_design.sv ]
 
-#set slow_corner "ss0p75vn40c ss0p75vn40c_i0p95v ss0p75vn40c_i0p75v ss0p95vn40c ss0p95vn40c_i0p75v"
-set slow_corner "ss0p95vn40c_i0p95v ss0p95vn40c "
+set slow_corner "ss0p75vn40c ss0p75vn40c_i0p95v ss0p75vn40c_i0p75v ss0p95vn40c ss0p95vn40c_i0p75v"
+#set slow_corner "ss0p95vn40c_i0p95v ss0p95vn40c "
 set fast_corner "ff0p95vn40c ff0p95vn40c_i1p16v ff0p95vn40c_i0p95v ff1p16vn40c ff1p16vn40c_i1p16v ff1p16vn40c_i0p95v"
 set slow_metal 1p9m_Cmax_-40
 set fast_metal 1p9m_Cmax_-40

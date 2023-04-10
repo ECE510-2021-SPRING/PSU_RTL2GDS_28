@@ -48,7 +48,7 @@ if { $innovus_enable_manual_macro_placement == 0} {
 } elseif { $innovus_enable_manual_macro_placement == 1} {
     # Placing IOs and running macro placement scripts. 
     placeAIO -onlyAIO 
-    source -echo -verbose ../../${top_design}.macro_placement_innovus.tcl
+    # source -echo -verbose ../../${top_design}.macro_placement_innovus.tcl
 }
 #defOut -noStdCells -noTracks -noSpecialNet -noTracks  "../outputs/${top_design}.floorplan.innovus.macros.def"
 
@@ -60,5 +60,3 @@ select_obj [ get_db insts -if ".is_pad==true" ]
 set_db [get_db selected ] .place_status fixed
 
 defOut -selected "../outputs/${top_design}.floorplan.innovus.macros.def"
-
-

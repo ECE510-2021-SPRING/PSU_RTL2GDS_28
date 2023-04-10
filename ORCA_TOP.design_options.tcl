@@ -114,10 +114,43 @@ if {[info exists synopsys_program_name]} {
 
    	}
 } elseif {[get_db root: .program_short_name] == "innovus"} {
+
+	#Read in upf dumped from genus	
+	read_power_intent ../../syn/outputs/ORCA_TOP.genus.upf -1801
+	commit_power_intent
+	#Edit box when you reduce fp size
+	modifyPowerDomainAttr PD_RISC_CORE -box 580 0 1000 400
+
 	setNanoRouteMode -drouteEndIteration 10
 	set cts_clks [get_clocks {SDRAM_CLK SYS_2x_CLK SYS_CLK PCI_CLK} ]
 
 	#set_max_transition 0.1 -clock_path $cts_clks
 	set_ccopt_property target_max_trans 0.3ns
 
+        # Try reducing the search and repair iterations for now.
+    
+        setNanoRouteMode -drouteEndIteration 5 
+        #setNanoRouteMode -drouteEndIteration 0
+    
+        #setNanoRouteMode -routeWithViaInPin true
+        #setNanoRouteMode -routeWithViaInPin 1:1
+        setNanoRouteMode -routeWithViaOnlyForMacroCellPin false
+        setNanoRouteMode -routeWithViaOnlyForStandardCellPin 1:1
+    
+        setOptMode -usefulSkew false
+        setOptMode -usefulSkewCCOpt none
+        setOptMode -usefulSkewPostRoute false
+        setOptMode -usefulSkewPreCTS false
+    
+        #Cadence method.  Not floating with these statements
+        setPinAssignMode -pinEditInBatch true
+        set all_ports [ get_ports * ]
+        set num_ports [ sizeof_collection $all_ports ]
+        # Split the ports into two balanced collections
+        set ports1 [ range_collection $all_ports 0 [expr $num_ports / 2 ] ]
+        set ports2 [ range_collection $all_ports [expr ($num_ports / 2 ) + 1 ]  [ expr $num_ports - 1 ]  ]
+        # put the two collections on to two layers of ports
+        editPin -edge 3 -pin [get_attribute $ports1 full_name ] -layer M6 -spreadDirection counterclockwise -spreadType START -offsetStart 500 -spacing 1 -unit MICRON -fixedPin 1 
+        editPin -edge 3 -pin [get_attribute $ports2 full_name ] -layer M8 -spreadDirection counterclockwise -spreadType START -offsetStart 500 -spacing 1 -unit MICRON -fixedPin 1 
+        setPinAssignMode -pinEditInBatch false
 }
