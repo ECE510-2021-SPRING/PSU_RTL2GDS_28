@@ -4,7 +4,7 @@ alias o set top_design ORCA_TOP
 alias e set top_design ExampleRocketSystem
 
 set_table_style -name report_timing -max_widths { 8,6,23,70} -no_frame_fix_width
-set_global report_timing_format  {delay arrival slew cell hpin}
+set_global report_timing_format  {delay arrival slew load fanout cell hpin}
 
 history keep 100
 #set systemTime [clock seconds]
