@@ -31,7 +31,7 @@ set init_pwr_net <{Power Net Names as in your design like VDD1 VSS1}>
 set init_gnd_net <Ground Net Name>
 set power_intent_file "../../syn/rtl/${top_design}.upf"
 
-
+source ../../constraints/${top_design}.mmmc_sdc
 set_interactive_constraint_modes [all_constraint_modes -active]
 
 
